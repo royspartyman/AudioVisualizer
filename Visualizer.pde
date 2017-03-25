@@ -87,7 +87,7 @@ public void lowFreq(float avg){
 
 
 public void add_beat(int i){
-    puddleList.get(i).add_beat((int)random(3,10),generateRandomColor());
+    puddleList.get(i).add_beat((int)random(3,40),generateRandomColor());
 }
 
 public void addCircle(int x, int y){

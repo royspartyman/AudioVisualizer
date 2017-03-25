@@ -27,9 +27,10 @@ public class Puddle{
   }
   
   public void add_beat(int w, color c){
+    outer_radius += w;
     Arc arc = new Arc(center_x,center_y, w, c, outer_radius);
     arc_list.add(arc);
-    outer_radius += padding;
+    outer_radius += w + padding;
   }
   
   void update(){
