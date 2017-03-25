@@ -39,7 +39,7 @@ public class Visualizer implements BeatDetectionListener{
 
 
 public void draw(){
-  if(millis() >= start_time + 100){
+  if(millis() >= start_time + 33){
     start_time = millis();
     background(255);
     for (int i = 0; i < puddleList.size(); i++){
@@ -50,26 +50,26 @@ public void draw(){
 }
 
 public void highFreq(float avg){
-    int int_avg = round(avg, 2);
-    Arc temp;
     for(Circles circles : circlesList){
           circles.drawHigh(avg, generateRandomColor());
     }
 
+    int int_avg = round(avg, 3);
+    Arc temp;
      for (Puddle pIndex : puddleList){
-         if (count < pIndex.num_arcs()){
+       count = 0;
+         while (count < pIndex.num_arcs()){
            temp = pIndex.get_arc(count);
            if (temp.amplitude() == 0){
              temp.set_amplitude(int_avg);
+             System.out.print("avg: " + int_avg + " ");
            }
-           else if (int_avg == temp.amplitude())
-             if (pIndex.get_arc(count).growing()){
+           else if (int_avg == temp.amplitude()){
                temp.flip_growing();
+               System.out.println("flip: " + int_avg);
            }
-          
            count++;
          }
-         count = 0;
      }
     
 }
@@ -87,7 +87,7 @@ public void lowFreq(float avg){
 
 
 public void add_beat(int i){
-    puddleList.get(i).add_beat((int)random(3,40),generateRandomColor());
+    puddleList.get(i).add_beat((int)random(3,30),generateRandomColor());
 }
 
 public void addCircle(int x, int y){

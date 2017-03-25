@@ -16,7 +16,6 @@ public class Puddle{
     center_x = x;
     center_y = y;
     outer_radius = r;
-    System.out.print("x: " + center_x + " y: " + center_y);
   }
   
   public int num_arcs(){

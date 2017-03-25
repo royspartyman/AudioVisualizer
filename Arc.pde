@@ -9,7 +9,9 @@ public class Arc{
   private boolean alive;
   private final int center_x;
   private final int center_y;
+  private int beats;
   Arc(){
+    beats = 0;
     c = 255;
     radius = 10;
     growing = true;
@@ -57,9 +59,14 @@ public class Arc{
   }
   public void flip_growing(){
     growing = !growing;
+    beats++;
   }
   public void set_amplitude(int amp){
     amplitude = amp;
+    beats = 0;
+  }
+  public int beats(){
+    return beats;
   }
   public int amplitude(){
     return amplitude;

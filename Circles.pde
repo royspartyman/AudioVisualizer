@@ -1,7 +1,6 @@
 public class Circles{
   private int centerX;
   private int centerY;
-  private float finalVal;
  
   ArrayList<String> colors = new ArrayList();
   
