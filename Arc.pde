@@ -1,4 +1,4 @@
-public class Arc extends Puddle{
+public class Arc{
   private int radius;
   private int arc_width;
   private int arc_start;
@@ -6,17 +6,20 @@ public class Arc extends Puddle{
   private boolean growing;
   private color c;
   private boolean alive;
-  
-  
+  private final int center_x;
+  private final int center_y;
   Arc(){
     c = 255;
     radius = 10;
     growing = true;
     alive = true;
+    center_x = mouseX;
+    center_y = mouseY;
   }
   
-  Arc(int w, color my_c, int outer_radius){
- 
+  Arc(int x, int y, int w, color my_c, int outer_radius){
+    center_x = x;
+    center_y = y;
     arc_width = w;
     c = my_c;
     radius = outer_radius;
@@ -32,7 +35,6 @@ public class Arc extends Puddle{
       growing = false;
     else
       growing = true;
-     System.out.print("x: " + this.center_x + " y: " + center_y);
 
   }
   
@@ -42,7 +44,6 @@ public class Arc extends Puddle{
       arc_end++;
     else
       arc_end--;
-     System.out.print("x: " + center_x + " y: " + center_y);
     if (arc_end - arc_start >= 360) //has the arc start getting shorter
       growing = false;
     if (arc_end - arc_start <= 0) //deletes the arc if the length = 0;
@@ -54,7 +55,7 @@ public class Arc extends Puddle{
   private void draw_arc(){
     noFill();
     strokeWeight(arc_width);
-        arc(this.center_x, this.center_y, radius, radius, (arc_start*PI)/180, (arc_end*PI)/180);
+        arc(center_x, center_y, radius, radius, (arc_start*PI)/180, (arc_end*PI)/180);
   }
   public boolean alive(){
     return alive;
