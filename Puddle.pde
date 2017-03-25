@@ -17,10 +17,13 @@ public class Puddle{
     outer_radius = r;
     System.out.print("x: " + center_x + " y: " + center_y);
   }
+  
   public void add_beat(int w, color c){
-    arc_list.add(new Arc(center_x,center_y, w, c, outer_radius));
+    Arc arc = new Arc(center_x,center_y, w, c, outer_radius);
+    arc_list.add(arc);
     outer_radius += padding;
   }
+  
   void update(){
     for (int i = 0; i < arc_list.size(); i++){
        arc_list.get(i).update();
@@ -32,6 +35,8 @@ public class Puddle{
   public int center_y(){
     return center_y;
   }
+  
+  
   
 }
 

@@ -2,12 +2,13 @@ final int start_radius = 100;
 final int num_circles = 5;
 final int frame_rate = 60;
 int start_time;
-ArrayList<Puddle> puddle_list;
-Colors colors;
+ArrayList<Puddle> puddle_list = new ArrayList();
+ArrayList<String> color_list = new ArrayList();
 BufferedReader reader;
 String line = "";
 int sampleRate = 44100;
 int timeSize = 1024;
+Circles circles = new Circles();
 AudioPlayer song;
 Minim minim;
 FFT fft;
@@ -18,7 +19,6 @@ void setup(){
   
   start_time = 0;
   puddle_list = new ArrayList();
-  colors = new Colors();
   
    minim = new Minim(this);
     
@@ -31,7 +31,7 @@ void setup(){
     while(line != null){
        try {
         line = reader.readLine();
-        colors.tags.add(line);
+        color_list.add(line);
         line= reader.readLine();
         
       } catch (IOException e) {
@@ -40,7 +40,20 @@ void setup(){
       }
     }
     
+    circles.colors = color_list;
 }
+
+color generate_random_color(){
+    color newColor = #000000;
+    if(color_list.size() != 0){
+          float r = random(0, color_list.size());
+          String c = color_list.get(int(r)).replace("#", "");
+          c = "FF" + c.replace("#", "");
+          newColor = unhex(c);
+    }
+    return newColor;
+}
+
 void draw(){
   if(millis() >= start_time + 100){
     start_time = millis();
@@ -58,9 +71,11 @@ void keyPressed(){
     }
   }
 }
+
 void mousePressed(){
   puddle_list.add(new Puddle(mouseX, mouseY, ((int)random(20,50))));
 }
+
 void add_beat(int i){
-    puddle_list.get(i).add_beat((int)random(3,10),((int)random(0,255)));
+    puddle_list.get(i).add_beat((int)random(3,10),generate_random_color());
 }

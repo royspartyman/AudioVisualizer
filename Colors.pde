@@ -2,9 +2,9 @@ import ddf.minim.*;
 import ddf.minim.analysis.*;
 
 
-class Colors{
+class Circles{
   
-  private ArrayList<String> tags= new ArrayList();
+  ArrayList<String> colors = new ArrayList();
   
   void draw()
   {
@@ -13,16 +13,16 @@ class Colors{
     frameRate(4);
     fft.forward(song.mix);
     
-      // float bw = fft.getBandWidth(); // returns the width of each frequency band in the spectrum (in Hz).
-    // println(bw); // returns 21.5332031 Hz for spectrum [0] & [512]
-    
     color newColor = #000000;
-    if(colors.tags.size() != 0){
-          float r = random(0,colors.tags.size());
-          String c = colors.tags.get(int(r)).replace("#", "");
+    if(color_list.size() != 0){
+          float r = random(0, color_list.size());
+          String c = color_list.get(int(r)).replace("#", "");
           c = "FF" + c.replace("#", "");
           newColor = unhex(c);
     }
+    
+      // float bw = fft.getBandWidth(); // returns the width of each frequency band in the spectrum (in Hz).
+    // println(bw); // returns 21.5332031 Hz for spectrum [0] & [512]
   
     for (int i = 0; i < 20; i++) {  // 12 is the number of bands 
     

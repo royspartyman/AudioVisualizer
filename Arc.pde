@@ -54,6 +54,7 @@ public class Arc{
   }
   private void draw_arc(){
     noFill();
+    stroke(c);
     strokeWeight(arc_width);
         arc(center_x, center_y, radius, radius, (arc_start*PI)/180, (arc_end*PI)/180);
   }
