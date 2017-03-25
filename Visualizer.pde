@@ -4,12 +4,12 @@ public class Visualizer implements BeatDetectionListener{
   final int num_circles = 5;
   final int frame_rate = 60;
   int start_time;
-  ArrayList<Puddle> puddle_list = new ArrayList();
-  ArrayList<String> color_list = new ArrayList();
+  ArrayList<Puddle> puddleList = new ArrayList();
+  ArrayList<Circles> circlesList = new ArrayList();
+  ArrayList<String> colorList = new ArrayList();
   BufferedReader reader;
   String line = "";
   MusicService musicService;
-  Circles circles = new Circles();
   Visualizer(){
     
   }
@@ -19,14 +19,14 @@ public class Visualizer implements BeatDetectionListener{
     musicService = new MusicService(obj);
     musicService.setBDLListener(this);
     start_time = 0;
-    puddle_list = new ArrayList();
+    puddleList = new ArrayList();
     musicService.playMusic();
       
     reader = createReader("colors.txt");
       while(line != null){
          try {
           line = reader.readLine();
-          color_list.add(line);
+          colorList.add(line);
           line= reader.readLine();
           
         } catch (IOException e) {
@@ -41,31 +41,40 @@ public void draw(){
   if(millis() >= start_time + 100){
     start_time = millis();
     background(255);
-    for (int i = 0; i < puddle_list.size(); i++){
-      puddle_list.get(i).update();
+    for (int i = 0; i < puddleList.size(); i++){
+      puddleList.get(i).update();
     }
     musicService.update();
   }
 }
 
 public void highFreq(float avg){
-    circles.drawHigh(avg, generateRandomColor());
+    for(Circles circles : circlesList){
+          circles.drawHigh(avg, generateRandomColor());
+    }
 }
 
 public void lowFreq(float avg){
-     circles.drawLow(avg, generateRandomColor());
+    for(Circles circles : circlesList){
+          circles.drawHigh(avg, generateRandomColor());
+    }
 }
 
 
 public void add_beat(int i){
-    puddle_list.get(i).add_beat((int)random(3,10),generateRandomColor());
+    puddleList.get(i).add_beat((int)random(3,10),generateRandomColor());
+}
+
+public void addCircle(int x, int y){
+  Circles circles = new Circles(x,y);
+  circlesList.add(circles);
 }
 
 public color generateRandomColor(){
     color newColor = #000000;
-    if(color_list.size() != 0){
-          float r = random(0, color_list.size());
-          String c = color_list.get(int(r)).replace("#", "");
+    if(colorList.size() != 0){
+          float r = random(0, colorList.size());
+          String c = colorList.get(int(r)).replace("#", "");
           c = "FF" + c.replace("#", "");
           newColor = unhex(c);
     }

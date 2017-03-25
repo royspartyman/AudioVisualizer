@@ -18,7 +18,7 @@ class MusicService implements BeatDetectionListener{
   public void lowFreq(float avg){}
   
   public void playMusic(){
-     song = minim.loadFile("eb.m4a", 2048);
+     song = minim.loadFile("eb.mp3", 2048);
      song.loop();
      fft = new FFT( song.bufferSize(), song.sampleRate());
   }

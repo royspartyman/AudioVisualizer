@@ -2,6 +2,8 @@ import ddf.minim.*;
 import ddf.minim.analysis.*;
 
 Visualizer visualizer = new Visualizer();
+boolean circlesOnMousePress = false;
+boolean puddleOnMousePress = false;
 
 void setup(){
   fullScreen();
@@ -15,13 +17,26 @@ void draw(){
 }
 
 public void keyPressed(){
-  if(key == ' '){
-    for (int i = 0; i < visualizer.puddle_list.size(); i++){
+  if(key == 'a' || key == 'A'){
+    for (int i = 0; i < visualizer.puddleList.size(); i++){
       visualizer.add_beat(i);
     }
+  }
+  else if(key == 'c' || key == 'C'){
+     circlesOnMousePress = true;
+     puddleOnMousePress = false;
+  }
+  else if (key == 'p' || key == 'P'){
+    puddleOnMousePress = true;
+    circlesOnMousePress = false;
   }
 }
 
 public void mousePressed(){
-  visualizer.puddle_list.add(new Puddle(mouseX, mouseY, ((int)random(20,50))));
+  if (circlesOnMousePress){
+    visualizer.addCircle(mouseX, mouseY);
+  }
+  else if(puddleOnMousePress){
+    visualizer.puddleList.add(new Puddle(mouseX, mouseY, ((int)random(20,50))));
+  }
 }
