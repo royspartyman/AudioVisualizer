@@ -1,0 +1,64 @@
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+
+class MusicService implements BeatDetectionListener{
+  
+  BeatDetectionListener beatdetectionListener;
+  AudioPlayer song;
+  Minim minim;
+  FFT fft;
+  int sampleRate = 44100;
+  
+  MusicService(Object ob){
+     minim = new Minim(ob);
+     setBDLListener(this);
+  }
+  
+  public void highFreq(float avg){}
+  public void lowFreq(float avg){}
+  
+  public void playMusic(){
+     song = minim.loadFile("eb.m4a", 2048);
+     song.loop();
+     fft = new FFT( song.bufferSize(), song.sampleRate());
+  }
+ 
+  
+  public void update(){
+    fft.forward(song.mix);
+  
+    for (int i = 0; i < 12; i++) {  // 12 is the number of bands 
+      int lowFreq;
+      if ( i == 0 ) {
+        lowFreq = 0;
+      } 
+      else {
+        lowFreq = (int)((sampleRate/2) / (float)Math.pow(2, 12 - i));
+      }
+  
+      int hiFreq = (int)((sampleRate/2) / (float)Math.pow(2, 11 - i));
+      int lowBound = fft.freqToIndex(lowFreq);
+      int hiBound = fft.freqToIndex(hiFreq); 
+      float avg = fft.calcAvg(lowBound, hiBound);
+  
+      if ((lowBound >= 32) && ( hiBound <= 64)) {
+        beatdetectionListener.lowFreq(avg);
+      }
+      
+      if ((lowBound >= 256) && ( hiBound <= 512)) {
+        beatdetectionListener.highFreq(avg);
+      }   
+      
+    }
+  }
+  
+  void setBDLListener(BeatDetectionListener beatdetectionListener){
+    this.beatdetectionListener = beatdetectionListener;
+} 
+  
+   void stop() {  
+    song.close(); // always close Minim audio classes when you are finished with them
+    minim.stop(); // always stop Minim before exiting
+  }
+  
+}
