@@ -3,6 +3,7 @@ public class Arc{
   private int arc_width;
   private int arc_start;
   private int arc_end;
+  private int amplitude;
   private boolean growing;
   private color c;
   private boolean alive;
@@ -15,9 +16,11 @@ public class Arc{
     alive = true;
     center_x = mouseX;
     center_y = mouseY;
+    amplitude = 0;
   }
   
   Arc(int x, int y, int w, color my_c, int outer_radius){
+    amplitude = 0;
     center_x = x;
     center_y = y;
     arc_width = w;
@@ -52,6 +55,15 @@ public class Arc{
       //alive = false;
      
   }
+  public void flip_growing(){
+    growing = !growing;
+  }
+  public void set_amplitude(int amp){
+    amplitude = amp;
+  }
+  public int amplitude(){
+    return amplitude;
+  }
   private void draw_arc(){
     noFill();
     stroke(c);
@@ -60,5 +72,8 @@ public class Arc{
   }
   public boolean alive(){
     return alive;
+  }
+  public boolean growing(){
+    return growing;
   }
 }

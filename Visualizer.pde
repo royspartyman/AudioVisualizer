@@ -3,6 +3,7 @@ public class Visualizer implements BeatDetectionListener{
   final int start_radius = 100;
   final int num_circles = 5;
   final int frame_rate = 60;
+  int count;
   int start_time;
   ArrayList<Puddle> puddleList = new ArrayList();
   ArrayList<Circles> circlesList = new ArrayList();
@@ -49,10 +50,34 @@ public void draw(){
 }
 
 public void highFreq(float avg){
+    int int_avg = round(avg, 2);
+    Arc temp;
     for(Circles circles : circlesList){
           circles.drawHigh(avg, generateRandomColor());
     }
+
+     for (Puddle pIndex : puddleList){
+         if (count < pIndex.num_arcs()){
+           temp = pIndex.get_arc(count);
+           if (temp.amplitude() == 0){
+             temp.set_amplitude(int_avg);
+           }
+           else if (int_avg == temp.amplitude())
+             if (pIndex.get_arc(count).growing()){
+               temp.flip_growing();
+           }
+          
+           count++;
+         }
+         count = 0;
+     }
+    
 }
+public int round(float val, int precision){
+  return (int)(val * (10*precision));
+}
+
+    
 
 public void lowFreq(float avg){
     for(Circles circles : circlesList){

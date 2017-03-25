@@ -4,6 +4,7 @@ public class Puddle{
   private int outer_radius;
   private final int center_x;
   private final int center_y;
+  
   Puddle(){
     arc_list = new ArrayList();
     center_x = mouseX;
@@ -16,6 +17,13 @@ public class Puddle{
     center_y = y;
     outer_radius = r;
     System.out.print("x: " + center_x + " y: " + center_y);
+  }
+  
+  public int num_arcs(){
+    return arc_list.size();
+  }
+  public Arc get_arc(int i){
+    return arc_list.get(i);
   }
   
   public void add_beat(int w, color c){
