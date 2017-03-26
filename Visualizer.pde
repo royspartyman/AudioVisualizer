@@ -14,6 +14,7 @@ public class Visualizer implements BeatDetectionListener{
   BufferedReader reader;
   String line = "";
   MusicService musicService;
+  Keyboard keyboard = new Keyboard();
   
   Visualizer(){
     
@@ -26,6 +27,11 @@ public class Visualizer implements BeatDetectionListener{
     start_time = 0;
     puddleList = new ArrayList();
     musicService.playMusic();
+    
+    for(int i = 0; i < 12; i++){
+      KeyboardPiece keyboardPiece = new KeyboardPiece(i);
+      keyboard.keyboardPieces.add(keyboardPiece);
+    }  
       
     reader = createReader("colors.txt");
       while(line != null){
@@ -55,6 +61,8 @@ public void draw(){
       circlingSpheresList.get(i).draw(generateRandomColor(), generateRandomColor(), generateRandomColor(), generateRandomColor());
     }
     musicService.update();
+    
+    keyboard.draw();
   }
 }
 
@@ -104,6 +112,33 @@ public void lowFreq(float avg){
           circle.drawLow(avg, generateRandomColor());
         }
     }
+}
+
+public void keyboardFrequencyHit(float band){
+    float r;
+    if(band < .1){
+      r = random(0,1);
+    }
+    else if(band > .2 && band < .3){
+      r = random(2,3);
+    }
+    else if(band >= .3 && band < .4){
+      r = random(4,5);
+    }
+    else if(band >=.5 && band <.6){
+      r = random(6,7);
+    }
+    else if(band >=.6 && band <.7){
+      r = random(7,8);
+    }
+    else if(band >=.8 && band <.9){
+      r = random(9,10);
+    }
+    else{
+      r = random(11);
+    }
+    keyboard.keyboardPieces.get((int)r).setLight(true, generateRandomColor());
+    
 }
 
 

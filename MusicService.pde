@@ -18,6 +18,8 @@ class MusicService implements BeatDetectionListener{
   
   public void highFreq(float avg){}
   public void lowFreq(float avg){}
+  public void keyboardFrequencyHit(float avg){}
+
   
   public void playMusic(){
      song = minim.loadFile("eb.mp3", 2048);
@@ -52,8 +54,7 @@ class MusicService implements BeatDetectionListener{
         beatdetectionListener.highFreq(avg);
       }   
         
-      //line(width/2, height/2, i, height - fft.getBand(i)*8);
-      
+      beatdetectionListener.keyboardFrequencyHit(fft.getBand(i));
     }
   }
   

@@ -3,16 +3,21 @@ public class Circles{
   private int centerY;
   private float lifetime;
   private float angle;
+  private boolean falling;
   
   ArrayList<String> colors = new ArrayList();
   
   Circles(int x, int y){
     this.centerX = x;
     this.centerY = y;
+    this.falling = true;
     this.lifetime = random(700, 1600);
   }
   
   public void drawHigh(float avg, color newColor){
+        if(falling){
+          centerY += 6;
+        }
         lifetime--;
         fill(newColor);
         stroke(3);
@@ -20,14 +25,10 @@ public class Circles{
         ellipseMode(CENTER);
         ellipse(centerX, centerY, avg*30, avg*30);
         angle++;
-        
   }
   
    public void drawLow(float avg, color newColor){
         lifetime--;
-        if(lifetime < 0){
-          
-        }
         fill(#ffffff);
         ellipseMode(CENTER);
         strokeWeight(2 );

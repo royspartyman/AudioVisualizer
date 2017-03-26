@@ -3,6 +3,8 @@ public class CirclingSphere{
   private float angle;
   private int centerX;
   private int centerY;
+  private boolean radiusChange = false;
+  private int radius;
   
   ArrayList<String> colors = new ArrayList();
   
@@ -32,10 +34,7 @@ public class CirclingSphere{
       float x3=300*cos(radians(angle+270)) + centerX;
       float y3=300*sin(radians(angle+270)) + centerY;
       ellipse(x3, y3, 30, 30);
-      
       angle++;
+      
    }
-   
-   
-
 };
