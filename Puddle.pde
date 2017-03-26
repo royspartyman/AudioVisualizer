@@ -32,20 +32,12 @@ public class Puddle{
     outer_radius += w + padding;
   }
   
-  void update(){
-    for (int i = 0; i < arc_list.size(); i++){
-       arc_list.get(i).update();
-    }
-  }
   public int center_x(){
     return center_x;
   }
   public int center_y(){
     return center_y;
   }
-  
-  
-  
 }
 
   

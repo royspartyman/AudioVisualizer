@@ -4,6 +4,7 @@ import ddf.minim.analysis.*;
 Visualizer visualizer = new Visualizer();
 boolean circlesOnMousePress = false;
 boolean puddleOnMousePress = false;
+boolean circlingSphereOnMousePress = false;
 
 void setup(){
   fullScreen();
@@ -30,6 +31,11 @@ public void keyPressed(){
     puddleOnMousePress = true;
     circlesOnMousePress = false;
   }
+  else if (key == 's'|| key == 'S'){
+    circlingSphereOnMousePress = true;
+    circlesOnMousePress = false;
+    puddleOnMousePress = false;
+  }
 }
 
 public void mousePressed(){
@@ -38,5 +44,8 @@ public void mousePressed(){
   }
   else if(puddleOnMousePress){
     visualizer.puddleList.add(new Puddle(mouseX, mouseY, ((int)random(20,50))));
+  }
+  else if(circlingSphereOnMousePress){
+    visualizer.addCirclingSphere(mouseX, mouseY);
   }
 }

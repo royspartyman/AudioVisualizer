@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 public class Visualizer implements BeatDetectionListener{
   
   final int start_radius = 100;
@@ -8,9 +10,11 @@ public class Visualizer implements BeatDetectionListener{
   ArrayList<Puddle> puddleList = new ArrayList();
   ArrayList<Circles> circlesList = new ArrayList();
   ArrayList<String> colorList = new ArrayList();
+  ArrayList<CirclingSphere> circlingSpheresList = new ArrayList();
   BufferedReader reader;
   String line = "";
   MusicService musicService;
+  
   Visualizer(){
     
   }
@@ -42,16 +46,27 @@ public void draw(){
   if(millis() >= start_time + 33){
     start_time = millis();
     background(255);
-    for (int i = 0; i < puddleList.size(); i++){
-      puddleList.get(i).update();
+    for(Puddle puddle : puddleList){
+      for(Arc arc : puddle.arc_list){
+        arc.update();
+      }
+    }
+    for (int i = 0; i < circlingSpheresList.size(); i++){
+      circlingSpheresList.get(i).draw(generateRandomColor(), generateRandomColor(), generateRandomColor(), generateRandomColor());
     }
     musicService.update();
   }
 }
 
 public void highFreq(float avg){
-    for(Circles circles : circlesList){
-          circles.drawHigh(avg, generateRandomColor());
+    for (Iterator<Circles> iterator = circlesList.iterator(); iterator.hasNext();) {
+        Circles circle = iterator.next();
+        if (circle.lifetime < 0) {
+            iterator.remove();
+        }
+        else{
+          circle.drawHigh(avg, generateRandomColor());
+        }
     }
 
     int int_avg = round(avg, 3);
@@ -80,8 +95,14 @@ public int round(float val, int precision){
     
 
 public void lowFreq(float avg){
-    for(Circles circles : circlesList){
-          circles.drawHigh(avg, generateRandomColor());
+    for (Iterator<Circles> iterator = circlesList.iterator(); iterator.hasNext();) {
+        Circles circle = iterator.next();
+        if (circle.lifetime < 0) {
+            iterator.remove();
+        }
+        else{
+          circle.drawLow(avg, generateRandomColor());
+        }
     }
 }
 
@@ -93,6 +114,11 @@ public void add_beat(int i){
 public void addCircle(int x, int y){
   Circles circles = new Circles(x,y);
   circlesList.add(circles);
+}
+
+public void addCirclingSphere(int x, int y){
+  CirclingSphere circlingSphere = new CirclingSphere(x,y);
+  circlingSpheresList.add(circlingSphere);
 }
 
 public color generateRandomColor(){

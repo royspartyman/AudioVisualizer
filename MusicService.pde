@@ -8,6 +8,8 @@ class MusicService implements BeatDetectionListener{
   Minim minim;
   FFT fft;
   int sampleRate = 44100;
+  float smoothFactor = 0.25;
+  float angle;
   
   MusicService(Object ob){
      minim = new Minim(ob);
@@ -26,7 +28,7 @@ class MusicService implements BeatDetectionListener{
   
   public void update(){
     fft.forward(song.mix);
-  
+      
     for (int i = 0; i < 12; i++) {  // 12 is the number of bands 
       int lowFreq;
       if ( i == 0 ) {
@@ -39,7 +41,8 @@ class MusicService implements BeatDetectionListener{
       int hiFreq = (int)((sampleRate/2) / (float)Math.pow(2, 11 - i));
       int lowBound = fft.freqToIndex(lowFreq);
       int hiBound = fft.freqToIndex(hiFreq); 
-      float avg = fft.calcAvg(lowBound, hiBound);
+      float avg = fft.calcAvg(lowBound, hiBound) * smoothFactor;
+      
   
       if ((lowBound >= 32) && ( hiBound <= 64)) {
         beatdetectionListener.lowFreq(avg);
@@ -48,6 +51,8 @@ class MusicService implements BeatDetectionListener{
       if ((lowBound >= 256) && ( hiBound <= 512)) {
         beatdetectionListener.highFreq(avg);
       }   
+        
+      //line(width/2, height/2, i, height - fft.getBand(i)*8);
       
     }
   }
