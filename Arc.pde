@@ -10,6 +10,7 @@ public class Arc{
   private final int center_x;
   private final int center_y;
   private int beats;
+  private float scale = 1;
   
   Arc(){
     beats = 0;
@@ -75,9 +76,10 @@ public class Arc{
   
   public void draw(){
     noFill();
+    scale += 2.5;
     stroke(c);
     strokeWeight(arc_width);
-    arc(center_x, center_y, radius, radius, (arc_start*PI)/180, (arc_end*PI)/180);
+    arc(center_x, center_y, radius+scale, radius+scale, (arc_start*PI)/180, (arc_end*PI)/180);
     strokeWeight(2);
   }
   public boolean alive(){

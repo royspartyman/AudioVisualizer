@@ -10,7 +10,7 @@ public class Circles{
   Circles(int x, int y){
     this.centerX = x;
     this.centerY = y;
-    this.falling = true;
+    this.falling = false;
     this.lifetime = random(700, 1600);
   }
   

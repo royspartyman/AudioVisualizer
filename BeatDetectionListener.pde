@@ -5,4 +5,10 @@ interface BeatDetectionListener{
   
   void keyboardFrequencyHit(float band);
   
+  void bang(float avg);
+  
+  void sphereMelody(float avg);
+  
+  void superBang(float avg);
+  
 }

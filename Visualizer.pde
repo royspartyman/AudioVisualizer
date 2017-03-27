@@ -13,45 +13,104 @@ public class Visualizer implements BeatDetectionListener{
   ArrayList<CirclingSphere> circlingSpheresList = new ArrayList();
   BufferedReader reader;
   String line = "";
+  color colorInt = 255;
   MusicService musicService;
   Keyboard keyboard = new Keyboard();
+  ShapeEmitter shapeEmitter;
   
   Visualizer(){
     
   }
+  
+public class InitialRunnable implements Runnable {
 
+    public void run() {
+
+        reader = createReader("colors.txt");
+          while(line != null){
+             try {
+              line = reader.readLine();
+              colorList.add(line);
+              line= reader.readLine();
+              
+            } catch (IOException e) {
+              e.printStackTrace();
+              line = null;
+            }
+          }
+          
+      puddleList = new ArrayList();
+            
+      for(int i = 0; i < 12; i++){
+      KeyboardPiece keyboardPiece = new KeyboardPiece(i);
+      keyboard.keyboardPieces.add(keyboardPiece);
+      }  
+      
+      shapeEmitter = new ShapeEmitter();
+    
+     for(int i = 1; i < 10; i++){
+      Shape shape = new Shape(i);
+      shape.colors = colorList;
+      shape.shapeColor = generateRandomColor();
+      shapeEmitter.shapes.add(shape);
+    } 
+        
+    }
+
+}
+
+  public void superBang(float avg){
+    for(CirclingSphere circlingSphere : circlingSpheresList){
+      circlingSphere.radiusChange = true;
+    }
+    if(start_time > 55000 && puddleList.size() < 3){
+      Puddle puddle = new Puddle(width/2, height/2, (int)random(2, 7));
+      puddleList.add(puddle);
+      for(int i = 0; i < 13; i++){
+        puddle.add_beat((int)random(3,30),generateRandomColor());
+      }
+    }
+    colorInt = generateRandomColor();
+  }
+  
+  public void sphereMelody(float avg){
+    if(circlingSpheresList.size() < 4){
+      CirclingSphere circlingSphere = new CirclingSphere(width/2, height/2);
+      circlingSpheresList.add(circlingSphere);
+    }
+  }
+  
+  
+  public void bang(float avg){
+    if(circlesList.size() < 5){
+      if(circlesList.size() == 0){
+         Circles circles = new Circles(width/2, height/2);
+         circlesList.add(circles);
+      }else if(start_time > 45000){
+      int xVal = (int)random(0, width);
+      int yVal = (int)random(0, height);
+      Circles circles = new Circles(xVal, yVal);
+      circlesList.add(circles);
+      CirclingSphere circlingSphere = new CirclingSphere(xVal, yVal);
+      circlingSpheresList.add(circlingSphere);
+      }
+    }
+  }
 
  public void initialize(Object obj){
     musicService = new MusicService(obj);
     musicService.setBDLListener(this);
     start_time = 0;
-    puddleList = new ArrayList();
     musicService.playMusic();
-    
-    for(int i = 0; i < 12; i++){
-      KeyboardPiece keyboardPiece = new KeyboardPiece(i);
-      keyboard.keyboardPieces.add(keyboardPiece);
-    }  
-      
-    reader = createReader("colors.txt");
-      while(line != null){
-         try {
-          line = reader.readLine();
-          colorList.add(line);
-          line= reader.readLine();
-          
-        } catch (IOException e) {
-          e.printStackTrace();
-          line = null;
-        }
-      }
+    InitialRunnable initialRun = new InitialRunnable();
+    initialRun.run();
   }
 
 
 public void draw(){
   if(millis() >= start_time + 33){
     start_time = millis();
-    background(255);
+    background(colorInt);
     for(Puddle puddle : puddleList){
       for(Arc arc : puddle.arc_list){
         arc.update();
@@ -61,8 +120,10 @@ public void draw(){
       circlingSpheresList.get(i).draw(generateRandomColor(), generateRandomColor(), generateRandomColor(), generateRandomColor());
     }
     musicService.update();
-    
-    keyboard.draw();
+    if(start_time < 25000){
+      keyboard.draw();
+    }
+    shapeEmitter.draw();
   }
 }
 

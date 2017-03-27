@@ -3,6 +3,8 @@
       private int keyNumber;
       private boolean lightUp = false;
       private color randomColor;
+      private float colourincrement=1;
+      private int counter = 0;
       
       KeyboardPiece(int keyNumber){
        this.keyNumber = keyNumber;
@@ -14,7 +16,6 @@
         float pieceWidth = totalWidth/12;
           
         stroke(0);
-        strokeWeight(4);
         
         if(lightUp){
           fill(randomColor);
@@ -24,7 +25,13 @@
         }
         
         rect(getMarginX()+pieceWidth*keyNumber, getMarginY(), pieceWidth, totalHeight);
-        lightUp = false;
+        counter +=1;
+        if(counter == 10){
+          counter = 0;
+          lightUp = false;
+        }else{
+          randomColor -=colourincrement;
+        }
       }  
       
       public void setLight(boolean bool, color randomColor){
